@@ -14,14 +14,12 @@
 
 (defn freqs
   [input]
-  (reduce (fn [acc x] 
-            (map + acc x))
-          input))
+  (reduce #(map + %1 %2) input))
 
 (defn common
   [f xs]
   (let [half (/ (count xs) 2)]
-    (map #(if (f half %1) "1" "0") (freqs xs))))
+    (map #(if (f half %1) 1 0) (freqs xs))))
 
 (defn part-one
   ([] (part-one data))
@@ -30,13 +28,14 @@
       (bin->int (common < input)))))
 
 (defn find-root
-  [f xs]
-  (let [cur (Integer/parseInt (first (common f xs)))
-        poss (filter #(= (first %1) cur) xs)]
-    (cond
-      (empty? poss) nil
-      (= 1 (count poss)) (first poss)
-      :else (cons cur (find-root f (map rest poss))))))
+  ([f xs] (find-root f xs []))
+  ([f xs base]
+   (let [cur (first (common f xs))
+         poss (filter #(= (first %1) cur) xs)]
+     (cond
+       (empty? poss) nil
+       (= 1 (count poss)) (concat base (first poss))
+       :else (recur f (map rest poss) (conj base cur))))))
 
 (defn part-two
   ([] (part-two data))

@@ -5,6 +5,6 @@
             [aoc.day-3]])
 
 (defn -main
-  "I don't do a whole lot ... yet."
+  "Print all of the answers"
   [& args]
   (println "Hello world!"))
