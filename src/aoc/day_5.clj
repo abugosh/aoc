@@ -1,16 +1,15 @@
 (ns aoc.day-5
-  [:require [clojure.string :as s]
+  [:require [aoc.utils :as u]
+            [clojure.string :as s]
             [clojure.core.match :refer [match]]])
 
 (defn make-point
   [x y]
   {:x x :y y})
 
-(defn parse-int [x] (Integer/parseInt x))
-
 (def data 
   (->> (s/split (slurp "resources/day-5.txt") #"\n")
-       (map #(map parse-int (drop 1 (re-matches #"(\d+),(\d+) -> (\d+),(\d+)" %1))))
+       (map #(map u/parse-int (drop 1 (re-matches #"(\d+),(\d+) -> (\d+),(\d+)" %1))))
        (map (fn [[x1 y1 x2 y2]] {:start (make-point x1 y1) :end (make-point x2 y2)}))))
 
 (defn vert?

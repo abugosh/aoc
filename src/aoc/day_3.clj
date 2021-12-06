@@ -1,12 +1,13 @@
 (ns aoc.day-3
-  [:require [clojure.string :as s]
-            [clojure.core.match :refer [match]]])
+  [:require 
+   [aoc.utils :as u]
+   [clojure.string :as s]
+   [clojure.core.match :refer [match]]])
 
 (def data 
   (->> (s/split (slurp "resources/day-3.txt") #"\n")
-       (map (fn [x]
-              (->> (s/split x #"")
-                   (map #(Integer/parseInt %1)))))))
+       (map #(->> (s/split %1 #"")
+                  (map u/parse-int)))))
 
 (defn bin->int
   [bin]

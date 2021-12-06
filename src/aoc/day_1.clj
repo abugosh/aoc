@@ -1,8 +1,10 @@
 (ns aoc.day-1
-  [:require [clojure.string :as s]])
+  [:require 
+   [aoc.utils :as u]
+   [clojure.string :as s]])
 
 (def data 
-  (map #(Integer/parseInt %) 
+  (map u/parse-int
        (s/split (slurp "resources/day-1.txt") #"\n")))
 
 (defn part-one
@@ -19,3 +21,6 @@
   ([input]
   (let [xs (map + input (rest input) (rest (rest input)))]
     (part-one xs))))
+
+(part-one)
+(part-two)

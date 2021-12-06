@@ -1,12 +1,13 @@
 (ns aoc.day-2
-  [:require [clojure.string :as s]
-            [clojure.core.match :refer [match]]])
+  [:require 
+   [aoc.utils :as u]
+   [clojure.string :as s]
+   [clojure.core.match :refer [match]]])
 
 (def data 
-  (map (fn [x]
-         (let [[dir value] (s/split x #" ")]
-           [dir (Integer/parseInt value)]))
-       (s/split (slurp "resources/day-2.txt") #"\n")))
+  (->> (s/split-lines (slurp "resources/day-2.txt"))
+       (map #(s/split %1 #" "))
+       (map (fn [[dir value]] [dir (u/parse-int value)]))))
 
 (defn sum-dir
   [xs dir]

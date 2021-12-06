@@ -1,15 +1,17 @@
 (ns aoc.day-4
-  [:require [clojure.string :as s]
-            [clojure.core.match :refer [match]]])
+  [:require 
+   [aoc.utils :as u]
+   [clojure.string :as s]
+   [clojure.core.match :refer [match]]])
 
 (def guesses
-  (map #(Integer/parseInt %1) (s/split (first (s/split-lines (slurp "resources/day-4.txt"))) #",")))
+  (map u/parse-int (s/split (first (s/split-lines (slurp "resources/day-4.txt"))) #",")))
 
 (def boards
   (->> (s/split-lines (slurp "resources/day-4.txt"))
        (drop 1)
        (remove empty?)
-       (map #(map (fn [x] (Integer/parseInt x)) (s/split (s/trim %1) #"\s+")))
+       (map #(map u/parse-int (s/split (s/trim %1) #"\s+")))
        (partition 5)
        (map (fn [x]
               {:rows (map set x)

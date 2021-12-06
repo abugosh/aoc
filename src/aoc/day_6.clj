@@ -1,9 +1,11 @@
 (ns aoc.day-6
-  [:require [clojure.string :as s]
-            [clojure.core.match :refer [match]]])
+  [:require 
+   [aoc.utils :as u]
+   [clojure.string :as s]
+   [clojure.core.match :refer [match]]])
 
 (def data 
-  (map #(Integer/parseInt %1) (clojure.string/split (clojure.string/trim (slurp "resources/day-6.txt")) #",")))
+  (map u/parse-int (clojure.string/split (clojure.string/trim (slurp "resources/day-6.txt")) #",")))
 
 (defn day
   [xs]
