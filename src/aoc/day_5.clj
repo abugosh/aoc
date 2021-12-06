@@ -30,11 +30,11 @@
   (map make-point (repeat x) (range (min y1 y2) (inc (max y2 y1)))))
 
 (defn diag-line
-  [{{y1 :y x1 :x} :start {y2 :y x2 :x} :end :as line}]
-  (distinct (concat [(:start line) (:end line)]
-                    (map make-point
-                         (range x1 x2 (if (> x1 x2) -1 1))
-                         (range y1 y2 (if (> y1 y2) -1 1))))))
+  [{{y1 :y x1 :x} :start {y2 :y x2 :x :as end} :end}]
+  (cons end
+        (map make-point
+             (range x1 x2 (if (> x1 x2) -1 1))
+             (range y1 y2 (if (> y1 y2) -1 1)))))
 
 (defn line->points
   [line]
