@@ -5,7 +5,7 @@
    [clojure.core.match :refer [match]]])
 
 (def data 
-  (->> (s/split (slurp "resources/day-3.txt") #"\n")
+  (->> (s/split-lines (slurp "resources/day-3.txt"))
        (map #(->> (s/split %1 #"")
                   (map u/parse-int)))))
 
