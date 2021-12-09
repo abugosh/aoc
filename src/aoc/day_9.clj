@@ -13,15 +13,12 @@
 
 (defn low-point?
   [floor x y]
-  (let [point (get (get floor y) x)
-        up (get (get floor (inc y) 10) x 10)
-        down (get (get floor (dec y) 10) x 10)
-        left (get (get floor y) (dec x) 10)
-        right (get (get floor y) (inc x) 10)]
-    (and (< point up)
-         (< point down)
-         (< point left)
-         (< point right))))
+  (let [point (get-in floor [y x])
+        up (get-in floor [(inc y) x] 10)
+        down (get-in floor [(dec y) x] 10)
+        left (get-in floor [y (dec x)] 10)
+        right (get-in floor [y (inc x)] 10)]
+    (and (< point up) (< point down) (< point left) (< point right))))
 
 (defn low-points
   [floor]
@@ -32,7 +29,7 @@
 
 (defn risk
   [floor x y]
-  (+ 1 (get (get floor y) x)))
+  (+ 1 (get-in floor [y x])))
 
 (defn part-one
   ([] (part-one data))
@@ -41,7 +38,7 @@
 
 (defn build-basin
   [floor x y basin]
-  (if (or (get basin [x y]) (= (get (get floor y []) x 9) 9))
+  (if (or (get basin [x y]) (= (get-in floor [y x] 9) 9))
     basin
     (->> (conj basin [x y])
          (build-basin floor (inc x) y)
