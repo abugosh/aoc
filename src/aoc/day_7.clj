@@ -14,22 +14,22 @@
 (defn cost->list
   [point f xs]
   (->> xs
-       (map (partial f point))
+       (pmap (partial f point))
        (apply +)))
 
 (defn find-cost
   [f crabs]
   (->> (range 0 (last (sort crabs)))
-        (map #(cost->list %1 f crabs))
-        sort
-        first))
+       (pmap #(cost->list %1 f crabs))
+       sort
+       first))
 
 (defn part-one
   ([] (part-one data))
   ([input]
    (find-cost flat-cost input)))
 
-(def exp-cost-memo (memoize (fn [x] (apply + (range 1  (inc x))))))
+(def exp-cost-memo (memoize (fn [x] (apply + (range 1 (inc x))))))
 
 (defn exp-cost
   [start end] 
