@@ -8,7 +8,8 @@
             [aoc.day-6]
             [aoc.day-7]
             [aoc.day-8]
-            [aoc.day-9]])
+            [aoc.day-9]
+            [aoc.day-10]])
 
 (defn -main
   "Print all of the answers"
