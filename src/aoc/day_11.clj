@@ -7,7 +7,7 @@
 (def data 
   (->> (s/split-lines (slurp "resources/day-11.txt"))
        (mapv #(->> (s/split %1 #"")
-                  (mapv u/parse-int)))))
+                   (mapv u/parse-int)))))
 
 (defn build-state
   [cave]
@@ -22,10 +22,8 @@
   [cave [y x]]
   (for [xp (range (dec x) (+ x 2))
         yp (range (dec y) (+ y 2))
-        :when (and (>= xp 0)
-                    (>= yp 0)
-                    (< xp (count (first cave)))
-                    (< yp (count cave)))]
+        :when (and (>= xp 0) (< xp (count (first cave)))
+                   (>= yp 0) (< yp (count cave)))]
     [yp xp]))
 
 (defn flash-points
@@ -60,28 +58,26 @@
      :flashes (->> new-cave flatten (filter neg?) count (+ flashes))}))
 
 (defn part-one
-  ([] (part-one data))
-  ([input]
-   (->> (range 100)
-        (reduce (fn [acc _] (update-state acc)) (build-state input))
+  ([] (part-one data 100))
+  ([input steps]
+   (->> input
+        build-state
+        (iterate update-state)
+        (drop steps)
+        first
         :flashes)))
 
 (defn all-flash?
   [cave]
   (every? #(= 0 %1) (flatten cave)))
 
-(defn find-all-flash
-  [cave]
-  (loop [i 0
-         c cave]
-    (if (all-flash? c)
-      i
-      (recur (inc i) (->> c inc-cave flash-cave clean-cave)))))
-
 (defn part-two
   ([] (part-two data))
   ([input]
-   (find-all-flash input)))
+   (->> input
+        (iterate #(->> % inc-cave flash-cave clean-cave))
+        (take-while (complement all-flash?))
+        count)))
 
 (part-one)
 (part-two)
