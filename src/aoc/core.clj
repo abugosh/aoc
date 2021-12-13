@@ -11,7 +11,8 @@
             [aoc.day-9]
             [aoc.day-10]
             [aoc.day-11]
-            [aoc.day-12]])
+            [aoc.day-12]
+            [aoc.day-13]])
 
 (defn -main
   "Print all of the answers"
