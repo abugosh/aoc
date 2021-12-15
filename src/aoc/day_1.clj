@@ -21,6 +21,3 @@
   ([input]
   (let [xs (map + input (rest input) (rest (rest input)))]
     (part-one xs))))
-
-(part-one)
-(part-two)

@@ -60,6 +60,3 @@
                          (map #(-> (freqs rules 20 [%1 %2])
                                    (update %1 dec)) base)
                          (apply merge-with +)) (first base) inc)))))
-
-(part-one)
-(part-two)

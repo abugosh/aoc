@@ -88,6 +88,3 @@
         (map #(apply str %1))
         (interpose "\n")
         (apply str))))
-
-(part-one)
-(part-two)

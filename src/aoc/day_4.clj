@@ -52,6 +52,3 @@
        (if (= 1 (count bs))
          (part-one nums bs)
          (recur (inc i) (remove (partial winner? cur) bs)))))))
-
-(part-one)
-(part-two)

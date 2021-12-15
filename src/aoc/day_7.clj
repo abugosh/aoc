@@ -39,6 +39,3 @@
   ([] (part-two data))
   ([input]
    (find-cost exp-cost input)))
-
-(part-one)
-(part-two)

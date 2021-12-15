@@ -78,6 +78,3 @@
         (iterate #(->> % inc-cave flash-cave clean-cave))
         (take-while (complement all-flash?))
         count)))
-
-(part-one)
-(part-two)

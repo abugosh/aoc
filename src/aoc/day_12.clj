@@ -60,6 +60,3 @@
   ([] (part-two data))
   ([input]
    (count (find-paths-2 input #{"start"} "start"))))
-
-(part-one)
-(part-two)

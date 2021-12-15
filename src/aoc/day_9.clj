@@ -58,6 +58,3 @@
         (sort >)
         (take 3)
         (apply *))))
-
-(part-one)
-(part-two)

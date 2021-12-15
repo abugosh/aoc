@@ -94,6 +94,3 @@
   ([] (part-two (build-cave (data-graph data) 5)))
   ([input]
    (part-one input [0 0] [(dec (count input)) (dec (count (first input)))])))
-
-(part-one)
-(part-two)

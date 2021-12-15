@@ -63,6 +63,3 @@
   ([] (part-two data))
   ([input]
    (count-overlap input)))
-
-(part-one)
-(part-two)

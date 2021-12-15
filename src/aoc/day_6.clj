@@ -56,6 +56,3 @@
         vals
         (remove nil?)
         (apply +))))
-
-(part-one)
-(part-two)

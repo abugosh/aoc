@@ -73,6 +73,3 @@
                        (apply str)
                        u/parse-int)))
         (apply +))))
-
-(part-one)
-(part-two)

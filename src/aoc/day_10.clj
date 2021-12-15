@@ -60,6 +60,3 @@
                      (map score-completion)
                      sort)]
      (first (drop (dec (/ (count scores) 2)) scores)))))
-
-(part-one)
-(part-two)

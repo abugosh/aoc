@@ -43,6 +43,3 @@
   ([input]
    (* (bin->int (find-root > input))
       (bin->int (find-root <= input)))))
-
-(part-one)
-(part-two)

@@ -37,6 +37,3 @@
                    {:aim 0 :depth 0 :horizontal 0}
                    input)]
      (* (:depth d) (:horizontal d)))))
-
-(part-one)
-(part-two)
