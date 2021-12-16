@@ -31,7 +31,7 @@
 (defn build-packet
   [msg]
   (p-type {:version (bin->int (take 3 msg))
-   :msg (drop 3 msg)}))
+           :msg (drop 3 msg)}))
 
 (defn end-literal?
   [xs]
@@ -44,11 +44,11 @@
 (defn parse-literal
   ([msg] (parse-literal msg []))
   ([msg literal]
-  (let [part (take 5 msg)
-        rest-msg (drop 5 msg)]
-    (if (end-literal? part)
-      {:msg rest-msg :literal (bin->int (concat literal (drop 1 part)))}
-      (recur rest-msg (concat literal (drop 1 part)))))))
+   (let [part (take 5 msg)
+         rest-msg (drop 5 msg)]
+     (if (end-literal? part)
+       {:msg rest-msg :literal (bin->int (concat literal (drop 1 part)))}
+       (recur rest-msg (concat literal (drop 1 part)))))))
 
 (defn parse-op-len
   [msg]
