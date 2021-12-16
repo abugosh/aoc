@@ -42,7 +42,7 @@
   (or (every? (partial = "0") xs) (empty? xs)))
 
 (defn parse-literal
-  ([{msg :msg :as packet}] (merge packet (parse-literal msg [])))
+  ([msg] (parse-literal msg []))
   ([msg literal]
   (let [part (take 5 msg)
         rest-msg (drop 5 msg)]
@@ -76,10 +76,9 @@
   [msg]
   (let [packet (build-packet msg)]
     (match [packet]
-           [{:type 4}] (parse-literal packet)
+           [{:type 4 :msg m}] (merge packet (parse-literal m))
            [{:msg (["0" & r] :seq)}] (merge packet (parse-op-len r))
-           [{:msg (["1" & r] :seq)}] (merge packet (parse-op-count r))
-           )))
+           [{:msg (["1" & r] :seq)}] (merge packet (parse-op-count r)))))
 
 (defn sum-version
   [packet]
