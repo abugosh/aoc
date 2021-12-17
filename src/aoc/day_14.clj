@@ -15,48 +15,36 @@
   (->> d
        (drop 2)
        (map #(s/split %1 #" -> "))
-       (map (fn [[rule elem]] (let [[r1 _] (s/split rule #"")] [rule [r1 elem]])))
-       (into {})))
+       (reduce (fn [acc [rule elem]]
+                 (let [[r1 r2] (s/split rule #"")]
+                   (assoc acc [r1 r2] (merge-with + {elem 1 [r1 elem] 1} {[elem r2] 1} {[r1 r2] -1}))))
+               {})))
 
-(def apply-rule
-  (memoize (fn [rules x y]
-             (rules (apply str x y)))))
+(defn apply-rule
+  [rules v len]
+  (reduce-kv #(assoc %1 %2 (* len %3)) {} (rules v)))
 
-(def step
-  (fn ([rules steps template] (->> template
-                                   (iterate (partial step rules))
-                                   (drop steps)
-                                   first))
-    ([rules template]
-     (concat (->> template
-                  (drop 1)
-                  (mapcat #(apply-rule rules %1 %2) template))
-             (take-last 1 template)))))
-
-(def freqs
-  (memoize (fn [rules steps template]
-             (->> template
-                  (step rules steps)
-                  frequencies))))
-
-(defn score
-  [sums]
-  (->> sums vals (#(- (apply max %1) (apply min %1)))))
+(defn step
+  [rules freq]
+  (->> freq
+       (map (fn [[k v]] (apply-rule rules k v)))
+       (apply merge-with + freq)))
 
 (defn part-one
   ([] (part-one (data-rules data) 10 (data-template data)))
   ([rules steps template]
    (->> template
-        (step rules steps)
-        frequencies
-        score)))
+        (drop 1)
+        (map #(hash-map [%1 %2] 1) template)
+        (apply merge-with + (frequencies template))
+        (iterate (partial step rules))
+        (drop steps)
+        first
+        (filter #(= (type (first %1)) String))
+        (map second)
+        (#(- (apply max %1) (apply min %1))))))
 
 (defn part-two
-  ([] (part-two (data-rules data) (data-template data)))
-  ([rules template]
-   (let [base (step rules 20 template)]
-     (score (update (->> base
-                         (drop 1)
-                         (map #(-> (freqs rules 20 [%1 %2])
-                                   (update %1 dec)) base)
-                         (apply merge-with +)) (first base) inc)))))
+  ([] (part-two (data-rules data) 40 (data-template data)))
+  ([rules steps template]
+   (part-one rules steps template)))
