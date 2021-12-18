@@ -26,36 +26,37 @@
     (number? tree) (+ tree value)
     :else [(add-left (first tree) value) (second tree)]))
 
-(defn explode
-  ([tree] (:tree (explode tree 0)))
-  ([tree depth]
-   (cond
-     (number? tree) {:tree tree}
-     (= depth 3) (match [tree]
-                        [[[a b] x]] (if (number? x) 
-                                      {:tree [0 (+ b x)] :left a}
-                                      {:tree [(+ b (first x)) 0] :left a :right (second x)})
-                        [[x [a b]]] {:tree [(+ x a) 0] :right b}
-                        :else {:tree tree})
-     :else (let [left (explode (first tree) (inc depth)) 
-                 t (cond-> [(:tree left) (second tree)]
-                      (number? (second tree)) (add-right (:right left))
-                      (coll?   (second tree)) (update 1 add-left (:right left)))
-                 right (explode (second t) (inc depth))]
-             {:tree (cond-> [(:tree left) (:tree right)]
-                      (number? (:tree left))  (add-left (:left right))
-                      (coll?   (:tree left))  (update 0 add-right (:left right)))
-              :left (:left left)
-              :right (:right right)}))))
+(def explode
+  (memoize
+    (fn ([tree] (:tree (explode tree 0)))
+      ([tree depth]
+       (cond
+         (number? tree) {:tree tree}
+         (= depth 3) (match [tree]
+                            [[[a b] x]] (if (number? x) 
+                                          {:tree [0 (+ b x)] :left a}
+                                          {:tree [(+ b (first x)) 0] :left a :right (second x)})
+                            [[x [a b]]] {:tree [(+ x a) 0] :right b}
+                            :else {:tree tree})
+         :else (let [left (explode (first tree) (inc depth)) 
+                     t (cond-> [(:tree left) (second tree)]
+                         (number? (second tree)) (add-right (:right left))
+                         (coll?   (second tree)) (update 1 add-left (:right left)))
+                     right (explode (second t) (inc depth))]
+                 {:tree (cond-> [(:tree left) (:tree right)]
+                          (number? (:tree left))  (add-left (:left right))
+                          (coll?   (:tree left))  (update 0 add-right (:left right)))
+                  :left (:left left)
+                  :right (:right right)}))))))
 
-(defn split
-  [tree]
-  (cond
-    (coll? tree) (if (= (first tree) (split (first tree)))
-                   [(first tree) (split (second tree))]
-                   [(split (first tree)) (second tree)])
-    (< tree 10) tree
-    :else [(quot tree 2) (+ (rem tree 2) (quot tree 2))]))
+(def split
+  (memoize (fn [tree]
+             (cond
+               (coll? tree) (if (= (first tree) (split (first tree)))
+                              [(first tree) (split (second tree))]
+                              [(split (first tree)) (second tree)])
+               (< tree 10) tree
+               :else [(quot tree 2) (+ (rem tree 2) (quot tree 2))]))))
 
 (defn reduce-tree
   [tree]
