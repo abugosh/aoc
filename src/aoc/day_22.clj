@@ -5,8 +5,6 @@
    [clojure.math.numeric-tower :as math]
    [clojure.core.match :refer [match]]])
 
-(declare do-cmd)
-
 (def data (slurp "resources/day-22.txt"))
 
 (defn build-command
@@ -123,5 +121,4 @@
   ([input]
    (->> input
         (reduce #(do-cmd %1 %2 (list)) (list))
-        region-count
-        )))
+        region-count)))
