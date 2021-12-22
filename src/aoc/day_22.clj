@@ -125,7 +125,3 @@
         (reduce #(do-cmd %1 %2 (list)) (list))
         region-count
         )))
-
-(time (part-one))
-(time (part-two (build-init data)))
-(time (part-two))
