@@ -54,7 +54,7 @@
   (if-some [crust (first (get game cave))]
     (if (and (= crust (cave-type cave)) (every? (partial = crust) (game cave)))
       (list)
-      (filter #(or (nil? (get cave-type %)) (and (= (get cave-type %) crust) (> (:depth game) (count (get game %))) (every? (partial = crust) (game %))))
+      (remove #(cave-type %)
               (concat (take-while #(nil? (get board %)) (range (inc cave) 11))
                       (take-while #(nil? (get board %)) (range (dec cave) -1 -1)))))
     (list)))
