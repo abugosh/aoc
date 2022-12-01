@@ -4,14 +4,24 @@
    [clojure.string :as s]])
 
 (def data
-  (->> (slurp "resources/2022/day-1.txt")))
+  (->> (slurp "resources/2022/day-1.txt")
+       s/split-lines
+       (partition-by #(= "" %))
+       (remove #(= (list "") %))
+       (map #(map u/parse-int %))))
 
 (defn part-one
   ([] (part-one data))
   ([input]
-   nil))
+   (->> input
+        (map #(apply + %))
+        (apply max))))
 
 (defn part-two
   ([] (part-two data))
   ([input]
-   nil))
+   (->> input
+        (map #(apply + %))
+        sort
+        (take-last 3)
+        (apply +))))
