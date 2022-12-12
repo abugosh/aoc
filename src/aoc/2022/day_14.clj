@@ -26,22 +26,22 @@
        (mapcat build-line)
        (into #{})))
 
-(defn next-sand [cave]
-  (let [void-level (->> cave (map second) (apply max))]
-    (loop [[x y :as s-loc] [500 0]]
-      (if (= y void-level)
-        nil
-        (if-let [fall-loc (some #(and (nil? (cave %)) %) [(list x (inc y)) (list (dec x) (inc y)) (list (inc x) (inc y))])]
-          (recur fall-loc)
-          s-loc)))))
+(defn next-sand [cave void-level]
+  (loop [[x y :as s-loc] [500 0]]
+    (if (= y void-level)
+      nil
+      (if-let [fall-loc (some #(and (nil? (cave %)) %) [(list x (inc y)) (list (dec x) (inc y)) (list (inc x) (inc y))])]
+        (recur fall-loc)
+        s-loc))))
 
 (defn fill-cave [cave]
-  (loop [cave cave]
-    (let [next-loc (next-sand cave)]
-      (cond
-        (= nil next-loc) cave
-        (= (list 500 0) next-loc) (conj cave next-loc)
-        :else (recur (conj cave next-loc))))))
+  (let [void-level (->> cave (map second) (apply max))]
+    (loop [cave cave]
+      (let [next-loc (next-sand cave void-level)]
+        (cond
+          (= nil next-loc) cave
+          (= (list 500 0) next-loc) (conj cave next-loc)
+          :else (recur (conj cave next-loc)))))))
 
 (defn part-one
   ([] (part-one data))
