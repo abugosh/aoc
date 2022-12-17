@@ -75,13 +75,10 @@
                  (apply conj (pop q) fresh)))))))
 
 (defn droplet-fill [droplet]
-  (let [mega-cube (build-mega-cube droplet)
-        filled-droplet (->> droplet
-                            border-cubes
-                            (reduce #(cube-fill %1 mega-cube %2) droplet))]
-    (if (= filled-droplet droplet)
-      droplet
-      (recur filled-droplet))))
+  (let [mega-cube (build-mega-cube droplet)]
+    (->> droplet
+         border-cubes
+         (reduce #(cube-fill %1 mega-cube %2) droplet))))
 
 (defn part-two
   ([] (part-two data))
