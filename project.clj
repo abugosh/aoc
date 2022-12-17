@@ -11,7 +11,7 @@
                  [org.clojure/data.int-map "1.0.0"]
                  [instaparse "1.4.12"]]
   :main ^:skip-aot aoc.core
-  :jvm-opts ["-Xmx8g"]
+  :jvm-opts ["-Xmx16g"]
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
