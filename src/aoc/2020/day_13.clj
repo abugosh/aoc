@@ -1,7 +1,8 @@
 (ns aoc.2020.day-13
   [:require
    [aoc.utils :as u]
-   [clojure.string :as s]])
+   [clojure.string :as s]
+   [clojure.math.numeric-tower :as math]])
 
 (defn build-time-table [[ts schedule]]
   {:ts (u/parse-int ts)
