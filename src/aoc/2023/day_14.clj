@@ -8,23 +8,6 @@
        (map #(s/split % #""))
        (mapv (partial mapv keyword))))
 
-(def example
-  (->>
-   "O....#....
-O.OO#....#
-.....##...
-OO.#O....O
-.O.....O#.
-O.#..O.#.#
-..O..#O..O
-.......O..
-#....###..
-#OO..#...."
-   s/split-lines
-   (map #(s/split % #""))
-   (mapv (partial mapv keyword)) ))
-
-
 (defn pivot [board]
   (apply mapv vector board))
 
