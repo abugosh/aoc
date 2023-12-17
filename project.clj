@@ -9,6 +9,7 @@
                  [org.clojure/core.logic  "1.0.0"]
                  [org.clojure/math.numeric-tower "0.0.5"]
                  [org.clojure/data.int-map "1.0.0"]
+                 [org.clojure/data.priority-map "1.1.0"]
                  [instaparse "1.4.12"]]
   :main ^:skip-aot aoc.core
   :jvm-opts ["-Xmx16g"]
