@@ -28,12 +28,11 @@
 (defn follow-ins [ins-list]
   (loop [pnt [0 0]
          [ins & ins-list] ins-list
-         trench #{}
-         colors {}]
+         trench #{}]
     (if (nil? ins)
-      {:lagoon trench :colors colors}
+      trench
       (let [seg (dig pnt ins)]
-        (recur (last seg) ins-list (into trench seg) (into colors (map vector seg (repeat (last ins)))))))))
+        (recur (last seg) ins-list (into trench seg))))))
 
 (defn flood-dig [trench]
   (loop [[cur & open] [[1 1]]
@@ -48,7 +47,6 @@
   ([input]
    (->> input
         follow-ins
-        :lagoon
         flood-dig
         count)))
 
@@ -71,12 +69,6 @@
       (let [end (mapv + cur (map (partial * len) (dir-map dir)))]
         (recur end ins-list (conj segments [cur end]))))))
 
-(defn normalize-segments [segments]
-  (let [x-offset (->> segments (apply concat) (map first) (apply min) abs)
-        y-offset (->> segments (apply concat) (map second) (apply min) abs)]
-    (->> segments
-         (map (fn [[[x1 y1] [x2 y2]]] [[(+ x1 x-offset) (+ y1 y-offset)] [(+ x2 x-offset) (+ y2 y-offset)]])))))
-
 (defn shoelace [segments]
   (/ (->> segments
           (map (fn [[[x1 y1] [x2 y2]]] (- (* x2 y1) (* x1 y2))))
@@ -90,6 +82,5 @@
          perimeter (inc (/ (apply + (map second ins-list)) 2))]
      (->> ins-list
           ins-segments
-          normalize-segments
           shoelace
           (+ perimeter)))))
