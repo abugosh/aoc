@@ -2,10 +2,17 @@
   [:require
    [clojure.string :as s]])
 
+(defn grid->map [grid]
+  (apply hash-map (apply concat
+                         (for [y (range 0 (count grid))
+                               x (range 0 (count (first grid)))]
+                           [[y x] (get-in grid [y x])]))))
+
 (def data
   (->> (slurp (format "resources/2024/%s.txt" (last (s/split (str (ns-name *ns*)) #"\."))))
        s/split-lines
-       (mapv #(s/split % #""))))
+       (mapv #(s/split % #""))
+       grid->map))
 
 (defn gen-pnt [pnt modifier]
   (mapv + pnt modifier))
@@ -23,7 +30,7 @@
 (defn find-start [grid]
   (loop [y 0
          x 0]
-    (case (get-in grid [y x])
+    (case (get grid [y x])
       "^" [y x]
       nil (recur (inc y) 0)
       (recur y (inc x)))))
@@ -34,7 +41,7 @@
            dir :N
            loc start]
       (let [nxt (gen-pnt loc (dir-map dir))]
-        (case (get-in grid nxt)
+        (case (get grid nxt)
           nil seen
           "#" (recur seen (turn-map dir) loc)
           (recur (conj seen nxt) dir nxt))))))
@@ -51,7 +58,7 @@
          dir dir
          loc loc]
     (let [nxt (gen-pnt loc (dir-map dir))]
-      (case (get-in grid nxt)
+      (case (get grid nxt)
         nil false
         "#" (recur seen (turn-map dir) loc)
         (if (seen [dir nxt])
@@ -66,10 +73,10 @@
            dir :N
            loc start]
       (let [nxt (gen-pnt loc (dir-map dir))]
-        (case (get-in grid nxt)
+        (case (get grid nxt)
           nil fixes
           "#" (recur fixes seen path (turn-map dir) loc)
-          (if (and (not= nxt start) (not (seen nxt)) (loopy-grid? (assoc-in grid nxt "#") path dir loc))
+          (if (and (not= nxt start) (not (seen nxt)) (loopy-grid? (assoc grid nxt "#") path dir loc))
             (recur (conj fixes nxt) (conj seen nxt) (conj path [dir nxt]) dir nxt)
             (recur fixes (conj seen nxt) (conj path [dir nxt]) dir nxt)))))))
 
