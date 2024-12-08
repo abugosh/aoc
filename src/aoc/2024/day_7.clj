@@ -19,7 +19,7 @@
        (map (juxt parse-target parse-vals))))
 
 (defn solvable? [[target eq]]
-  (loop [[[a b & ls] & rst] [eq]]
+  (loop [[[a b & ls] & rst] (list eq)]
     (cond
       (and (nil? b) (nil? a)) false
       (and (nil? b) (= a target)) true
@@ -37,11 +37,11 @@
         (apply +))))
 
 (defn fancy-solvable? [[target eq]]
-  (loop [[[a b & ls] & rst] [eq]]
+  (loop [[[a b & ls] & rst] (list eq)]
     (cond
       (and (nil? b) (nil? a)) false
       (and (nil? b) (= a target)) true
-      (nil? b) (recur rst)
+      (or (nil? b) (> a target)) (recur rst)
       :else (recur (conj rst
                          (cons (+ a b) ls)
                          (cons (* a b) ls)
