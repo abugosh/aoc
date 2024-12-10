@@ -36,8 +36,7 @@
     (reduce (fn [acc i]
               (reduce (fn [m pnt]
                         (assoc m pnt (->> (m pnt)
-                                          (mapcat m)
-                                          (filter #(= 9 (grid %))))))
+                                          (mapcat m))))
                       acc (groups i)))
             graph (reverse (range 0 8)))))
 

@@ -18,3 +18,8 @@
 
 (defn transpose [ls]
   (apply mapv vector ls))
+
+(defn group-vals [grid]
+  (reduce-kv (fn [acc k v]
+               (update acc v conj k))
+             {} grid))
