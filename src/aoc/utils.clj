@@ -16,6 +16,11 @@
               :E [0 1]
               :W [0 -1]})
 
+(def diagonal-map {:NW [-1 -1]
+                   :NE [-1 1]
+                   :SW [1 -1]
+                   :SE [1 1]})
+
 (defn transpose [ls]
   (apply mapv vector ls))
 
