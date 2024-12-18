@@ -11,6 +11,9 @@
 (defn gen-pnt [pnt modifier]
   (mapv + pnt modifier))
 
+(defn manhatten-dist [[y1 x1] [y2 x2]]
+  (+ (abs (- x1 x2)) (abs (- y1 y2))))
+
 (def dir-map {:N [-1 0]
               :S [1 0]
               :E [0 1]
